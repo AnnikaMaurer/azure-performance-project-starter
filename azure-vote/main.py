@@ -25,7 +25,6 @@ from opencensus.trace import config_integration
 from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
 
-import settings
 
 # Logging
 logger = logging.getLogger(__name__)
