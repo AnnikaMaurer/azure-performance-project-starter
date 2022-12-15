@@ -28,9 +28,7 @@ from opencensus.trace.tracer import Tracer
 
 # Logging
 logger = logging.getLogger(__name__)
-handler = AzureLogHandler(
-    connection_string="InstrumentationKey=de63ddbc-76d8-4abc-9fe0-ab51451e2879"
-)
+handler = AzureLogHandler(connection_string="InstrumentationKey=de63ddbc-76d8-4abc-9fe0-ab51451e2879")
 handler.setFormatter(logging.Formatter("%(traceId)s %(spanId)s %(message)s"))
 logger.addHandler(handler)
 
@@ -40,22 +38,18 @@ view_manager = stats.view_manager
 
 # Add Logger for custom Events:
 config_integration.trace_integrations(["logging"])
-config_integration.trace_integrations(
-    ["requests"]
-)  # <-- this line enables the requests integration
+config_integration.trace_integrations(["requests"])  # this line enables the requests integration
 
 # Metrics
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics=True,
     connection_string="InstrumentationKey=de63ddbc-76d8-4abc-9fe0-ab51451e2879",
-)
+    )
 view_manager.register_exporter(exporter)
 
 # Tracing
 tracer = Tracer(
-    exporter=AzureExporter(
-        connection_string="InstrumentationKey=de63ddbc-76d8-4abc-9fe0-ab51451e2879"
-    ),
+    exporter=AzureExporter(connection_string="InstrumentationKey=de63ddbc-76d8-4abc-9fe0-ab51451e2879"),
     sampler=ProbabilitySampler(1.0),
 )
 app = Flask(__name__)
@@ -66,9 +60,7 @@ app = Flask(__name__)
 # Requests
 middleware = FlaskMiddleware(
     app,
-    exporter=AzureExporter(
-        connection_string="InstrumentationKey=de63ddbc-76d8-4abc-9fe0-ab51451e2879"
-    ),
+    exporter=AzureExporter(connection_string="InstrumentationKey=de63ddbc-76d8-4abc-9fe0-ab51451e2879"),
     sampler=ProbabilitySampler(rate=1.0),
 )
 
@@ -115,7 +107,6 @@ def index():
         # TODO: use tracer object to trace dog vote
         with tracer.span(name="Dog Vote") as span:
             print("Dog Vote")
-        # TODO: use tracer object to trace dog vote
 
         # Return index with values
         return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
