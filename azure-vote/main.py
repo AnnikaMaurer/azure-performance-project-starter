@@ -34,6 +34,16 @@ handler = AzureLogHandler(
 handler.setFormatter(logging.Formatter("%(traceId)s %(spanId)s %(message)s"))
 logger.addHandler(handler)
 
+# For metrics
+stats = stats_module.stats
+view_manager = stats.view_manager
+
+# Add Logger for custom Events:
+config_integration.trace_integrations(["logging"])
+config_integration.trace_integrations(
+    ["requests"]
+)  # <-- this line enables the requests integration
+
 # Metrics
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics=True,
